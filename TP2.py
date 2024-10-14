@@ -36,7 +36,7 @@ def recontruir(monedas, optimos):
         izq, der, opt = optimos[i][indice]
        
         # Veo si queda solo un elemento o si agarre la moneda de la izquierda con la ecuacion de recurrencia
-        prox_i_si_agarro_izq = izq + 2 if monedas[izq+1] > monedas[der] else izq + 1
+        prox_i_si_agarro_izq = izq + 2 if izq == der or monedas[izq+1] > monedas[der] else izq + 1
         if izq == der or opt == monedas[izq] + optimos[i-2][prox_i_si_agarro_izq][-1]: 
             final.append(f"Sophia debe agarrar la primera ({monedas[izq]})")
             g_sophia += monedas[izq]
@@ -87,3 +87,5 @@ def monedas_dinamicas(mon):
 
     # Reconstruyo la solución
     return recontruir(mon, optimos)
+
+print(monedas_dinamicas([520, 781, 334, 568, 706, 362, 201, 482, 19, 145]))
