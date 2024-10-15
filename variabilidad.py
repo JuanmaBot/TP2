@@ -10,36 +10,25 @@ tiempos_poco_variado = []
 tiempos_medianamente_variado = []
 tiempos_muy_variado = []
 
+def tomar_tiempo(monedas):
+    """Se encarga de tomar el tiempo de ejecución de monedas_dinamicas para el conjunto de monedas dado"""
+    inicio = datetime.datetime.now()
+    monedas_dinamicas(monedas)
+    fin = datetime.datetime.now()
+    return fin - inicio
+
+def crear_monedas(n, max):
+    """Crea un conjunto de monedas de tamaño n con valores aleatorios entre 1 y max"""
+    return [random.randint(min, max) for _ in range(n)]
+
 # Función para medir tiempos de ejecución
 def medir_tiempo(n):
-    poco_variado = []
-    medianamente_variado = []
-    muy_variado = []
+    """Mide el tiempo de ejecución para conjuntos de monedas poco variados, medianamente variados y muy variados"""
+    poco_variado = crear_monedas(n, 10)
+    medianamente_variado = crear_monedas(n, 5000)
+    muy_variado = crear_monedas(n, 100000000000)
 
-    for _ in range(n):
-        poco_variado.append(random.randint(1, 10))
-        medianamente_variado.append(random.randint(1, 5000))
-        muy_variado.append(random.randint(1, 100000000000))
-
-    # Medimos tiempo para conjunto poco variado
-    inicio = datetime.datetime.now()
-    monedas_dinamicas(poco_variado)
-    fin = datetime.datetime.now()
-    tiempo_poco_variado = fin - inicio
-
-    # Medimos tiempo para conjunto medianamente variado
-    inicio = datetime.datetime.now()
-    monedas_dinamicas(medianamente_variado)
-    fin = datetime.datetime.now()
-    tiempo_medianamente_variado = fin - inicio
-
-    # Medimos tiempo para conjunto muy variado
-    inicio = datetime.datetime.now()
-    monedas_dinamicas(muy_variado)
-    fin = datetime.datetime.now()
-    tiempo_muy_variado = fin - inicio
-
-    return tiempo_poco_variado.total_seconds(), tiempo_medianamente_variado.total_seconds(), tiempo_muy_variado.total_seconds()
+    return tomar_tiempo(poco_variado).total_seconds(), tomar_tiempo(medianamente_variado).total_seconds(), tomar_tiempo(muy_variado).total_seconds()
 
 # Ejecutamos para cada tamaño de conjunto
 for tamano in tamanos:
