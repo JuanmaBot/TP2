@@ -1,3 +1,5 @@
+import sys
+
 def juega_mateo(monedas, izq, der, g_mateo):
     """
     # Descripción
@@ -88,4 +90,22 @@ def monedas_dinamicas(mon):
     # Reconstruyo la solución
     return recontruir(mon, optimos)
 
-print(monedas_dinamicas([520, 781, 334, 568, 706, 362, 201, 482, 19, 145]))
+if __name__ == "__main__":
+    # Recibir archivo como argumento
+    if len(sys.argv) != 2:
+        print("Uso: python main.py <archivo>")
+        sys.exit(1)
+
+    # Leer archivo. Ignorar las lineas que comienzan con #. Las monedas estan en una linea separadas por ;
+    with open(sys.argv[1], "r") as file:
+        for line in file:
+            if not line.startswith("#"):
+                monedas = list(map(int, line.strip().split(";")))
+
+    # Calcular la maxima sumatoria posible que puede obtener Sophia
+    resultado, g_sophia, g_mateo = monedas_dinamicas(monedas)
+
+    # Imprimir resultado
+    print("; ".join(resultado))
+    print(f"Ganancia Sophia: {g_sophia}")
+    print(f"Ganancia Mateo: {g_mateo}")
