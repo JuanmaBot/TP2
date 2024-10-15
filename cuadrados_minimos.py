@@ -2,8 +2,6 @@ import csv
 import matplotlib.pyplot as plt
 import numpy as np
 
-from TP2 import monedas_dinamicas
-
 # ========= Aproximacion por cuadrados minimos ========= #
 
 def ajuste_cuadratico(cantidades, tiempos):
