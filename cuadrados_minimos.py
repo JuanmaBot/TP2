@@ -12,7 +12,12 @@ def ajuste_cuadratico(cantidades, tiempos):
     AtA = A.T @ A
     Atb = A.T @ tiempos
     x = np.linalg.solve(AtA, Atb)
-    return x
+
+    a, b, c = x
+    tiempos_predecidos = a * cantidades**2 + b * cantidades + c
+    errores_residuales = list(map(abs, tiempos - tiempos_predecidos))
+
+    return x, errores_residuales
 
 # ========== Graficos ========== #
 
@@ -35,6 +40,14 @@ def graficar_ajuste_cuadratico(cantidades, tiempos, coeficiente_2, coeficiente_1
     plt.grid(True)
     plt.show()
 
+def graficar_error(errores):
+    plt.plot(errores, marker='o')
+    plt.title("Errores residuales del ajuste")
+    plt.xlabel("Cantidad de monedas")
+    plt.ylabel("Error residual")
+    plt.grid(True)
+    plt.show()
+
 if __name__ == "__main__":
     with open('./tablas/tabla_variabilidad.csv', 'r') as csvfile:
         reader = csv.reader(csvfile)
@@ -51,11 +64,14 @@ if __name__ == "__main__":
             tiempos_muy_variadas.append(float(row[3]))
 
     # Graficamos los tiempos medidos
-    coeficiente_2, coeficiente_1, coeficiente_0 = ajuste_cuadratico(cantidades, tiempos_poco_variadas)
-    graficar_ajuste_cuadratico(cantidades, tiempos_poco_variadas, coeficiente_2, coeficiente_1, coeficiente_0)
+    x, errores = ajuste_cuadratico(cantidades, tiempos_poco_variadas)
+    graficar_ajuste_cuadratico(cantidades, tiempos_poco_variadas, x[0], x[1], x[2])
+    graficar_error(errores)
 
-    coeficiente_2, coeficiente_1, coeficiente_0 = ajuste_cuadratico(cantidades, tiempos_medianamente_variadas)
-    graficar_ajuste_cuadratico(cantidades, tiempos_medianamente_variadas, coeficiente_2, coeficiente_1, coeficiente_0)
+    x, errores = ajuste_cuadratico(cantidades, tiempos_medianamente_variadas)
+    graficar_ajuste_cuadratico(cantidades, tiempos_medianamente_variadas, x[0], x[1], x[2])
+    graficar_error(errores)
 
-    coeficiente_2, coeficiente_1, coeficiente_0 = ajuste_cuadratico(cantidades, tiempos_muy_variadas)
-    graficar_ajuste_cuadratico(cantidades, tiempos_muy_variadas, coeficiente_2, coeficiente_1, coeficiente_0)
+    x, errores = ajuste_cuadratico(cantidades, tiempos_muy_variadas)
+    graficar_ajuste_cuadratico(cantidades, tiempos_muy_variadas, x[0], x[1], x[2])
+    graficar_error(errores)
